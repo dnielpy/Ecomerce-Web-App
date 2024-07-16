@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!-- Meta Tags -->
+    <meta cha$et="UTF-8">
+    <meta name="author" content="Kamran Mubarik">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title -->
+    <title>E-Commerce Online Shop</title>
+    <!-- Style Sheet -->
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Javascript -->
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#slider-range" ).slider({
+              range: true,
+              min: 0,
+              max: 10000,
+              values: [ 1000, 3000 ],
+              slide: function( event, ui ) {
+                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+              }
+            });
+            $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+              " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="brand">
+            <div class="logo">
+                <a href="index">
+                    <img src="/static/img/icons/online_shopping.png">
+                    <div class="logo-text">
+                        <p class="big-logo">Ecommerce</p>
+                        <p class="small-logo">online shop</p>
+                    </div>
+                </a>
+            </div> <!-- logo -->
+            <div class="shop-icon">
+                <div class="dropdown">
+                    <img src="/static/img/icons/account.png">
+                    <div class="dropdown-menu">
+                        <ul>
+                            <li><a href="account">My Account</a></li>
+                            <li><a href="orde$">My Orders</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <img src="/static/img/icons/shopping_cart.png">
+                    <div class="dropdown-menu cart-item">
+                        <table border="1">
+                            <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th class="center">Price</th>
+                                <th class="center">Qty.</th>
+                                <th class="center">Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cartItem : ${cartItems}">
+                                <td><img th:src="@{'/static/img/product/' + ${cartItem.image}}"></td>
+                                <td th:text="${cartItem.productName}"></td>
+                                <td class="center" th:text="${cartItem.price}"></td>
+                                <td class="center" th:text="${cartItem.quantity}"></td>
+                                <td class="center" th:text="${cartItem.price * cartItem.quantity}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <!-- shop icons -->
+        </div> <!-- brand -->
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul>
+                    <li><a href="index">Home</a></li>
+                    <li><a href="shop">Shop</a></li>
+                    <li><a href="about">About</a></li>
+                    <li><a href="contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="search-bar">
+                <form action="/shop" method="get">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" placeholder="Search">
+                        <button type="submit"><img src="/static/img/icons/search.png"></button>
+                    </div>
+                </form>
+            </div>
+        </div> <!-- menu -->
+    </div> <!-- container -->
+</header> <!-- header -->
+
+<div class="container">
+    <main>
+        <div class="breadcrumb">
+            <ul>
+                <li><a href="index">Home</a></li>
+                <li> /</li>
+                <li>Shop</li>
+            </ul>
+        </div> <!-- End of Breadcrumb-->
+
+        <div class="new-product-section shop">
+            <div class="sidebar">
+                <div class="sidebar-widget">
+                    <h3>Category</h3>
+                    <ul>
+                        <li><a th:href="@{/shop(category='M')}">Men's Products</a></li>
+                        <li><a th:href="@{/shop(category='F')}">Woman's Products</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-widget">
+                    <h3>Range Filter</h3>
+                    <p>
+                        <label for="amount"></label>
+                        <input type="text" id="amount" readonly style="border:0; color:#F0E68C;  margin-bottom: 5px;">
+                    </p>
+                    <div id="slider-range"></div>
+                </div>
+            </div>
+            <div class="new-product-container">
+                <ul style="list-style-type: none;">
+                    <li th:each="product : ${products}">
+                        <div class="new-product">
+                            <a href="product">
+                                <img th:src="@{'/static/img/product/' + ${product.imageUrl}}">
+                            </a>
+                            <div class="new-product-detail">
+                                <h3 th:text="${product.category.name}"></h3>
+                                <h2 th:text="${product.name}"></h2>
+                                <a href="#">Add to Cart</a>
+                                <p th:text="${'$' + product.cost}"></p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="error-container" th:if="${errorMessage != null}">
+                    <img src="/static/img/other/notfound.png" class="error-image">
+                </div>
+            </div>
+        </div> <!-- New Product Section -->
+        <div class="load-more">
+            <a href="shop">Load More</a>
+        </div>
+    </main> <!-- Main Area -->
+</div>
+
+<footer>
+    <div class="container">
+        <div class="footer-widget">
+            <div class="widget">
+                <div class="widget-heading">
+                    <h3>Important Link</h3>
+                </div>
+                <div class="widget-content">
+                    <ul>
+                        <li><a href="about">About</a></li>
+                        <li><a href="contact">Contact</a></li>
+                        <li><a href="refund">Refund Policy</a></li>
+                        <li><a href="terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-heading">
+                    <h3>Information</h3>
+                </div>
+                <div class="widget-content">
+                    <ul>
+                        <li><a href="account">My Account</a></li>
+                        <li><a href="orde$">My Orde$</a></li>
+                        <li><a href="cart">Cart</a></li>
+                        <li><a href="checkout">Checkout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-heading">
+                    <h3>Follow us</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="follow">
+                        <ul>
+                            <li><a href="#"><img src="/static/img/icons/facebook.png"></a></li>
+                            <li><a href="#"><img src="/static/img/icons/twitter.png"></a></li>
+                            <li><a href="#"><img src="/static/img/icons/instagram.png"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-heading">
+                    <h3>Subscribe for Newsletter</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="subscribe">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="subscribe" placeholder="Email">
+                                <img src="/static/img/icons/paper_plane.png">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Footer Widget -->
+        <div class="footer-bar">
+            <div class="copyright-text">
+                <p>Copyright 2021 - All Rights Reserved</p>
+            </div>
+            <div class="payment-mode">
+                <img src="/static/img/icons/paper_money.png">
+                <img src="/static/img/icons/visa.png">
+                <img src="/static/img/icons/mastercard.png">
+            </div>
+        </div> <!-- Footer Bar -->
+    </div>
+</footer> <!-- Footer Area -->
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( function() {
+    $( "#slider-range" ).slider({
+        range: true,
+        min: 0,
+        max: 10000,
+        values: [ 1000, 3000 ],
+        slide: function( event, ui ) {
+            $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        },
+        stop: function( event, ui ) {
+            $.ajax({
+                url: '/shop/range',
+                data: {
+                    min: ui.values[0],
+                    max: ui.values[1]
+                },
+                success: function(data) {
+                    // Vaciar el contenedor de productos
+                    $('.new-product-container ul').empty();
+
+                    // Verificar si los datos están vacíos
+                    if (data.length === 0) {
+                        // Mostrar una imagen o un mensaje indicando que no se encontraron productos
+                        $('.new-product-container ul').append('<li><img src="static/img/other/notfound.png" alt="No products found"></li>');
+                    } else {
+                        // Iterar sobre los datos recibidos
+                        $.each(data, function(i, product) {
+                            // Crear un nuevo elemento de producto
+                            var productElement = '<li>' +
+                                '<div class="new-product">' +
+                                '<a href="product">' +
+                                '<img src="/static/img/product/' + product.imageUrl + '">' +
+                                '</a>' +
+                                '<div class="new-product-detail">' +
+                                '<h3>' + product.category.name + '</h3>' +
+                                '<h2>' + product.name + '</h2>' +
+                                '<a href="#">Add to Cart</a>' +
+                                '<p>$' + product.cost + '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</li>';
+
+                            // Agregar el nuevo elemento al contenedor de productos
+                            $('.new-product-container ul').append(productElement);
+                        });
+                    }
+                }
+            });
+        }
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+        " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+});
+</script>
+
+
+</body>
+
+</html>
