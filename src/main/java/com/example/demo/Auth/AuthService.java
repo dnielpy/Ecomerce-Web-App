@@ -45,7 +45,6 @@ public class AuthService {
         user.setAddress(request.getAddress());
         user.setTel(request.getTel());
         user.setMobile(request.getMobile());
-        user.setRole(Role.USER);
 
         userRepository.save(user);
 

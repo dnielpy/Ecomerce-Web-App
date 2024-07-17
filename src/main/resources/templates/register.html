@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
     <!-- Meta Tags -->
@@ -10,12 +10,47 @@
     <title>E-Commerce Online Shop</title>
     <!-- Style Sheet -->
     <link rel="stylesheet" type="text/css" href="/static/css/registerstyle.css"/>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("form").on("submit", function(event){
+                event.preventDefault();
+
+                var formData = {
+                    email: $("#email").val(),
+                    password: $("#password").val(),
+                    firstname: $("#firstname").val(),
+                    lastname: $("#lastname").val(),
+                    country: $("#country").val(),
+                    city: $("#city").val(),
+                    address: $("#address").val(),
+                    tel: $("#tel").val(),
+                    mobile: $("#mobile").val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/auth/register",
+                    data: JSON.stringify(formData),
+                    dataType: "json",
+                    success: function(response){
+                        console.log(response);
+                        // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
+                    },
+                    error: function(error){
+                        console.log(error);
+                        // Aquí puedes manejar los errores
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
 <h2>Registration Form</h2>
-<form action="/register" method="post">
+<form action="/auth/register" method="post">
     <label for="email">Email:</label><br>
     <input type="email" id="email" name="email" required><br>
     <label for="password">Password:</label><br>
