@@ -18,6 +18,9 @@ public class UserEntity implements UserDetails {
     private Integer id;
     @Column(name = "email")
     private String email;
+
+    private final String username;
+
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -36,6 +39,7 @@ public class UserEntity implements UserDetails {
     private String password;
 
     public UserEntity() {
+        this.username = null;
     }
 
     public UserEntity(String email, String firstName, String lastName, String country, String city, String address, String tel, String mobile, String password) {
@@ -48,6 +52,7 @@ public class UserEntity implements UserDetails {
         this.tel = tel;
         this.mobile = mobile;
         this.password = password;
+        this.username = email;
     }
 
     public UserDTO toDto() {
