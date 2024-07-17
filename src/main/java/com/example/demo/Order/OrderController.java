@@ -51,7 +51,7 @@ public class OrderController {
 
     @GetMapping("/user-date")
     public ResponseEntity<List<OrderDTO>> getOrdersByUserAndDate(@RequestParam String email, @RequestParam String date) {
-        UserEntity user = userRepository.findByEmail(email);
+        UserEntity user = userRepository.findByUsername(email);
         UserDTO userDTO = user.toDto();
         List<OrderDTO> result = orderService.getOrdersByUserAndDate(userDTO, date);
         return new ResponseEntity<>(result, HttpStatus.OK);

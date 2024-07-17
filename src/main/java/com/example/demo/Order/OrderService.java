@@ -27,16 +27,16 @@ public class OrderService {
     //Create
     public OrderDTO createOrder(UserDTO userDTO, double total, String date, String paymentMethod, String status, String productName) {
 
-        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
+        UserEntity user = userRepository.findByUsername(userDTO.getUsername());
 
         OrderEntity new_order = new OrderEntity(user, date, total, paymentMethod, status, productName);
         orderRepository.save(new_order);
-        return new OrderDTO(new_order.getUser().getEmail(), total, date, paymentMethod, status, productName);
+        return new OrderDTO(new_order.getUser().getUsername(), total, date, paymentMethod, status, productName);
     }
 
     //Delete
     public OrderDTO deleteOrder(UserDTO userDTO) {
-        OrderEntity order = orderRepository.findByUserEmail(userDTO.getEmail());
+        OrderEntity order = orderRepository.findByUsername(userDTO.getUsername());
         if (order != null) {
             orderRepository.deleteById(order.getId());
             return null;
@@ -51,7 +51,7 @@ public class OrderService {
         List<OrderDTO> orderDTOS = new ArrayList<>();
 
         for (OrderEntity order : orders) {
-            OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getEmail(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
+            OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getUsername(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
             orderDTOS.add(orderDTO_temp);
         }
         return orderDTOS;
@@ -62,8 +62,8 @@ public class OrderService {
         List<OrderDTO> orderDTOS = new ArrayList<>();
 
         for (OrderEntity order : orders) {
-            if (order.getUser().getEmail().equals(userDTO.getEmail())) {
-                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getEmail(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
+            if (order.getUser().getUsername().equals(userDTO.getUsername())) {
+                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getUsername(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
                 orderDTOS.add(orderDTO_temp);
             }
         }
@@ -76,7 +76,7 @@ public class OrderService {
 
         for (OrderEntity order : orders) {
             if (order.getDate().equals(date)) {
-                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getEmail(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
+                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getUsername(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
                 orderDTOS.add(orderDTO_temp);
             }
         }
@@ -88,8 +88,8 @@ public class OrderService {
         List<OrderDTO> orderDTOS = new ArrayList<>();
 
         for (OrderEntity order : orders) {
-            if (order.getUser().getEmail().equals(userDTO.getEmail()) && order.getDate().equals(date)) {
-                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getEmail(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
+            if (order.getUser().getUsername().equals(userDTO.getUsername()) && order.getDate().equals(date)) {
+                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getUsername(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
                 orderDTOS.add(orderDTO_temp);
             }
         }
@@ -102,7 +102,7 @@ public class OrderService {
 
         for (OrderEntity order : orders) {
             if (order.getAmount() == total) {
-                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getEmail(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
+                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getUsername(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
                 orderDTOS.add(orderDTO_temp);
             }
         }
@@ -115,7 +115,7 @@ public class OrderService {
 
         for (OrderEntity order : orders) {
             if (order.getAmount() >= min && order.getAmount() <= max) {
-                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getEmail(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
+                OrderDTO orderDTO_temp = new OrderDTO(order.getUser().getUsername(), order.getAmount(), order.getDate(), order.getPaymentMethod(), order.getStatus(), order.getProductName());
                 orderDTOS.add(orderDTO_temp);
             }
         }

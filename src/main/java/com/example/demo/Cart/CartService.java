@@ -30,8 +30,8 @@ public class CartService {
 
     //Create
     public CartEntity createCart(UserDTO userDTO) {
-        CartEntity cartEntity = cartRepository.findByEmail(userDTO.getEmail());
-        UserEntity userEntity = userRepository.findByEmail(userDTO.getEmail());
+        CartEntity cartEntity = cartRepository.findByUsername(userDTO.getUsername());
+        UserEntity userEntity = userRepository.findByUsername(userDTO.getUsername());
         if (cartEntity == null) {
             cartEntity = new CartEntity(userEntity);
             return cartEntity;
@@ -42,10 +42,10 @@ public class CartService {
 
     //addToCart
     public CartEntity addToCart(UserDTO userDTO, ProductDTO productDTO) {
-        CartEntity cart = cartRepository.findByEmail(userDTO.getEmail());
+        CartEntity cart = cartRepository.findByUsername(userDTO.getUsername());
 
         ProductEntity product = productRepository.findByName(productDTO.getName());
-        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
+        UserEntity user = userRepository.findByUsername(userDTO.getUsername());
 
         if (product == null) {
             throw new IllegalArgumentException("El producto que intentas agregar no existe");
@@ -72,7 +72,7 @@ public class CartService {
         Optional<ProductEntity> productOptional = productRepository.findById(product_id);
         if (productOptional.isPresent()) {
             ProductEntity product = productOptional.get();
-            CartEntity cart = cartRepository.findByEmail(email);
+            CartEntity cart = cartRepository.findByUsername(email);
             List<Long> products = cart.getProducts();
             products.remove(product.getId());
             cart.setProducts(products);
@@ -85,7 +85,7 @@ public class CartService {
 
     //Clean cart
     public void cleanCart(String email) {
-        CartEntity cart = cartRepository.findByEmail(email);
+        CartEntity cart = cartRepository.findByUsername(email);
         List<Long> products = cart.getProducts();
         products.clear();
         cart.setProducts(products);

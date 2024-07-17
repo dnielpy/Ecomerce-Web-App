@@ -13,26 +13,26 @@ public class CartEntity {
     @Column(name = "id")
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "email", referencedColumnName = "email")
+    @JoinColumn(name = "username", referencedColumnName = "username")
     private UserEntity user;
     @ElementCollection
     private List<Long> products;
-    @Column(name = "email", insertable = false, updatable = false)
-    private final String email;
+    @Column(name = "username", insertable = false, updatable = false)
+    private final String username;
 
     public CartEntity(UserEntity user, List<Long> products) {
         this.user = user;
         this.products = products;
-        this.email = user.getEmail();
+        this.username = user.getUsername();
     }
 
     public CartEntity(UserEntity user) {
         this.user = user;
-        this.email = user.getEmail();
+        this.username = user.getUsername();
     }
 
     public CartEntity() {
-        this.email = null;
+        this.username = null;
     }
 
     public Integer getId() {

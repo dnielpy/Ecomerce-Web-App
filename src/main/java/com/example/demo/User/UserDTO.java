@@ -1,7 +1,7 @@
 package com.example.demo.User;
 
 public class UserDTO {
-    private final String email;
+    private final String username;
     private final String firstName;
     private final String lastName;
     private final String country;
@@ -10,8 +10,8 @@ public class UserDTO {
     private final String tel;
     private final String mobile;
 
-    public UserDTO(String email, String firstName, String lastName, String country, String city, String address, String tel, String mobile) {
-        this.email = email;
+    public UserDTO(String username, String firstName, String lastName, String country, String city, String address, String tel, String mobile) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -21,8 +21,8 @@ public class UserDTO {
         this.mobile = mobile;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getFirstName() {

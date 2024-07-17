@@ -23,7 +23,7 @@ public class OrderEntity {
     private String status;
     @Column(name = "product_name")
     private String productName;
-    private String useremail;
+    private String username;
 
     public OrderEntity(UserEntity user, String date, Double amount, String paymentMethod, String status, String productName) {
         this.user = user;
@@ -32,11 +32,11 @@ public class OrderEntity {
         this.paymentMethod = paymentMethod;
         this.status = status;
         this.productName = productName;
-        this.useremail = user.getEmail();
+        this.username = user.getUsername();
     }
 
     public OrderEntity() {
-        this.useremail = null;
+        this.username = null;
     }
 
     public Long getId() {

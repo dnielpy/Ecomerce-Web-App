@@ -68,7 +68,7 @@ public class UserController {
     public ResponseEntity<OrderDTO> buy(@PathVariable String email) {
         try {
             UserDTO userDTO = userService.getUser(email);
-            OrderDTO orderDTO = userService.buy(userDTO, cartRepository.findByEmail(email));
+            OrderDTO orderDTO = userService.buy(userDTO, cartRepository.findByUsername(email));
             return new ResponseEntity<>(orderDTO, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

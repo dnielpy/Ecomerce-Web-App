@@ -43,25 +43,25 @@ public class UserService {
     }
 
     //Create
-    public UserDTO createUser(String email, String firstName, String lastName, String country, String city, String address, String tel, String mobile, String password) {
-        UserEntity new_user = userRepository.findByEmail(email);
+    public UserDTO createUser(String username, String firstName, String lastName, String country, String city, String address, String tel, String mobile, String password) {
+        UserEntity new_user = userRepository.findByUsername(username);
         if (new_user == null) {
-            new_user = new UserEntity(email, firstName, lastName, country, city, address, tel, mobile, passwordEncoder().encode(password));
+            new_user = new UserEntity(username, firstName, lastName, country, city, address, tel, mobile, passwordEncoder().encode(password));
             userRepository.save(new_user);
-            CartEntity cart = cartRepository.findByEmail(email);
+            CartEntity cart = cartRepository.findByUsername(username);
             if (cart == null) {
                 CartEntity cartEntity = new CartEntity(new_user, new ArrayList<>());
                 cartRepository.save(cartEntity);
             }
             return new_user.toDto();
         } else {
-            throw new IllegalArgumentException("El email ya existe en la base de datos. Seleccione otro");
+            throw new IllegalArgumentException("El username ya existe en la base de datos. Seleccione otro");
         }
     }
 
     //Get
-    public UserDTO getUser(String email) {
-        UserEntity new_user = userRepository.findByEmail(email);
+    public UserDTO getUser(String username) {
+        UserEntity new_user = userRepository.findByUsername(username);
         if (new_user != null) {
             return new_user.toDto();
         } else {
@@ -70,13 +70,13 @@ public class UserService {
     }
 
     //Update
-    public UserDTO updateUser(String email, String new_email, String new_firstName, String new_lastName, String new_country, String new_city, String new_address, String new_tel, String new_mobile) {
-        UserEntity user = userRepository.findByEmail(email);
+    public UserDTO updateUser(String username, String new_username, String new_firstName, String new_lastName, String new_country, String new_city, String new_address, String new_tel, String new_mobile) {
+        UserEntity user = userRepository.findByUsername(username);
         if (user != null) {
-            if (userRepository.findByEmail(new_email) != null) {
-                throw new IllegalArgumentException("Ya existe un usuario con ese email en la base de datos");
+            if (userRepository.findByUsername(new_username) != null) {
+                throw new IllegalArgumentException("Ya existe un usuario con ese username en la base de datos");
             } else {
-                user.setEmail(new_email);
+                user.setEmail(new_username);
                 user.setFirstName(new_firstName);
                 user.setLastName(new_lastName);
                 user.setCountry(new_country);
@@ -93,8 +93,8 @@ public class UserService {
     }
 
     //Delete
-    public UserDTO deleteUser(String email) {
-        UserEntity new_user = userRepository.findByEmail(email);
+    public UserDTO deleteUser(String username) {
+        UserEntity new_user = userRepository.findByUsername(username);
         if (new_user != null) {
             userRepository.delete(new_user);
             return null;
@@ -105,7 +105,7 @@ public class UserService {
 
     //Buy
     public OrderDTO buy(UserDTO userDTO, CartEntity cart) {
-        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
+        UserEntity user = userRepository.findByUsername(userDTO.getUsername());
 
         List<Optional<ProductEntity>> products = new ArrayList<>();
 

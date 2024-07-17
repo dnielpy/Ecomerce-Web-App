@@ -40,7 +40,7 @@ public class CartController {
     @PostMapping("/addToCart")
     public ResponseEntity<List<Long>> addToCart(@RequestParam String email, @RequestParam String product_name) {
         try {
-            UserEntity userEntity = userRepository.findByEmail(email);
+            UserEntity userEntity = userRepository.findByUsername(email);
             UserDTO userDTO = userEntity.toDto();
             ProductEntity productEntity = productRepository.findByName(product_name);
             ProductDTO productDTO = productEntity.toDto();
@@ -61,10 +61,10 @@ public class CartController {
     }
 
     @GetMapping("/shop")
-    public String showShopPage(@RequestParam String email, Model model) {
-        UserEntity userEntity = userRepository.findByEmail(email);
+    public String showShopPage(@RequestParam String username, Model model) {
+        UserEntity userEntity = userRepository.findByUsername(username);
         if (userEntity != null) {
-            CartEntity cartEntity = cartRepository.findByEmail(userEntity.getEmail());
+            CartEntity cartEntity = cartRepository.findByUsername(userEntity.getUsername());
             if (cartEntity != null) {
                 model.addAttribute("cartItems", cartEntity.getProducts());
             }

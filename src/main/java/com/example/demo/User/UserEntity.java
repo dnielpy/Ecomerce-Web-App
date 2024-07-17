@@ -10,16 +10,12 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class UserEntity implements UserDetails {
-    @Enumerated(EnumType.STRING)
-    Role role;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "email")
-    private String email;
-
-    private final String username;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "first_name")
     private String firstName;
@@ -37,13 +33,14 @@ public class UserEntity implements UserDetails {
     private String mobile;
     @Column(name = "password")
     private String password;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
     public UserEntity() {
-        this.username = null;
     }
 
-    public UserEntity(String email, String firstName, String lastName, String country, String city, String address, String tel, String mobile, String password) {
-        this.email = email;
+    public UserEntity(String username, String firstName, String lastName, String country, String city, String address, String tel, String mobile, String password) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -52,19 +49,14 @@ public class UserEntity implements UserDetails {
         this.tel = tel;
         this.mobile = mobile;
         this.password = password;
-        this.username = email;
     }
 
     public UserDTO toDto() {
-        return new UserDTO(getEmail(), getFirstName(), getLastName(), getCountry(), getCity(), getAddress(), getTel(), getMobile());
-    }
-
-    public String getEmail() {
-        return email;
+        return new UserDTO(getUsername(), getFirstName(), getLastName(), getCountry(), getCity(), getAddress(), getTel(), getMobile());
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.username = email;
     }
 
     public String getFirstName() {
