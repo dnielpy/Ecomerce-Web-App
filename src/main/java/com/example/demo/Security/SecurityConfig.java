@@ -24,7 +24,9 @@ public class SecurityConfig {
                                 .disable())
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                                .anyRequest().permitAll())
+                                .requestMatchers("/auth/**").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .formLogin(Customizer.withDefaults())
                 .build();
     }

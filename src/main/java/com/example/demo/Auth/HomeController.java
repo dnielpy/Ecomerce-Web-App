@@ -76,7 +76,6 @@ public class HomeController {
     public List<ProductDTO> getProductsByRange(@RequestParam double min, @RequestParam double max) {
         return productService.getProductByRange(min, max);
     }
-+
 
     @RequestMapping("/shop")
     public String shop() {

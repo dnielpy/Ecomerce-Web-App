@@ -1,10 +1,17 @@
 package com.example.demo.User;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEntity{
+public class UserEntity implements UserDetails {
+    @Enumerated(EnumType.STRING)
+    Role role;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -43,7 +50,7 @@ public class UserEntity{
         this.password = password;
     }
 
-    public UserDTO toDto(){
+    public UserDTO toDto() {
         return new UserDTO(getEmail(), getFirstName(), getLastName(), getCountry(), getCity(), getAddress(), getTel(), getMobile());
     }
 
@@ -111,6 +118,20 @@ public class UserEntity{
         this.mobile = mobile;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    //UserDetails methods
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
     public String getPassword() {
         return password;
     }
@@ -119,20 +140,35 @@ public class UserEntity{
         this.password = password;
     }
 
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
     // Getters and setters for all fields...
 
     @Override
     public String toString() {
-        return "UserEntity{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", tel='" + tel + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "UserEntity{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", country='" + country + '\'' + ", city='" + city + '\'' + ", address='" + address + '\'' + ", tel='" + tel + '\'' + ", mobile='" + mobile + '\'' + ", password='" + password + '\'' + '}';
     }
 }
