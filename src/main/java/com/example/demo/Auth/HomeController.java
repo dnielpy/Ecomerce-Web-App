@@ -18,11 +18,11 @@ public class HomeController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping(value = "/register")
-    public String registerForm() {
+    @GetMapping("/register")
+    public String register() {
         return "register";
     }
-    
+
     @RequestMapping("/")
     public String index() {
         return "index";
